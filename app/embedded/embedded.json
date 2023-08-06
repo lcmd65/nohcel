@@ -1,0 +1,20 @@
+{
+    "ngày": "date",
+    "tháng": "date",
+    "năm": "date",
+    "hôm nay": "date",
+    "sáng": "date",
+    "trưa": "date",
+    "chiều": "date",
+    "tối": "date",
+    "khuya": " date",
+    "số nhà": "address",
+    "ngõ": "address",
+    "huyện": "address",
+    "xã": "address",
+    "phường": "address",
+    "thị trấn": "address",
+    "quận": "address",
+    "thành phố": "address",
+    "bưu điện hà nội": "address"
+}
