@@ -15,14 +15,15 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 import PyQt6.QtQuick
+
 class HomeQT(QMainWindow):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent = None):
+        super().__init__()
         self.setWindowTitle("VinBigData NOHCEL")
         self.resize(400, 200)
         self._createAction()
-        app.view.var.background_view = QPixmap('app/images/background_login.png').resize((1092, 1080)) ##4213 × 4167
-        app.view.var.logo_view = QPixmap('app/images/color_logo.png').resize((40, 25))
+        app.view.var.background_view = QPixmap('app/images/background_login.png')
+        app.view.var.logo_view = QPixmap('app/images/color_logo.png')
         self.initUI()
 
     def initUI(self):
