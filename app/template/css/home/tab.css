@@ -1,5 +1,4 @@
 QTabWidget::tab-bar {
-    position: static;
     padding-left: 15px;
     padding-top: 15px;
 }
@@ -7,12 +6,11 @@ QTabWidget::tab-bar {
 QTabBar::tab {
     background: #ececec;
     color: black;
-    position: static;
     padding: 5px;
     padding-left: 5px;
     padding-top: 5px;
 }
 
 QTabBar::tab:selected {
-    background: lightgray;
+    background: rgb(228, 228, 228);
 }

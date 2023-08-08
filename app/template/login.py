@@ -22,6 +22,7 @@ class LoginUIQT(QWidget):
         self.width = self.frameGeometry().width()
         self.height = self.frameGeometry().height()
         self.initUI()
+        self.setStyle()
     
     def eventLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True or\
@@ -85,7 +86,7 @@ class LoginUIQT(QWidget):
         self.frame_entry.addWidget(label_account)
 
         account = QLineEdit()
-        account.setStyleSheet("background-color: white")
+        account.setPlaceholderText('Enter your Username')
         self.frame_entry.addWidget(account)
 
         label_password = QLabel("Password")
@@ -95,7 +96,7 @@ class LoginUIQT(QWidget):
 
         password = QLineEdit()
         password.setEchoMode(QLineEdit.EchoMode.Password)
-        password.setStyleSheet("background-color: white")
+        password.setPlaceholderText('Enter your password')
         self.frame_entry.addWidget(password)
 
         label_forgot = QLabel("Forgot Password?")
@@ -116,3 +117,6 @@ class LoginUIQT(QWidget):
         self.main_layout.addWidget(self.label_privacy)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.main_layout)
+
+    def setStyle(self):
+        

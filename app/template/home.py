@@ -74,7 +74,7 @@ class HomeQT(QMainWindow):
         self.setCentralWidget(self.tabs)
     
     def setStyle(self):
-        with open("app/template/css/home.css","r") as file:
+        with open("app/template/css/home/tab.css","r") as file:
             self.tabs.setStyleSheet(file.read())
 
     def eventButtonClickEdit(self):
