@@ -32,7 +32,7 @@ class LoginUIQT(QWidget):
             self.close()
             
         else:
-            QMessageBox.critical(self, "Login", "Wrong Username or password")
+            QMessageBox.critical(self, "Login", "Wrong Username or self.password")
     
     def eventChangePosition(self):
         self.width = self.frameGeometry().width()
@@ -43,7 +43,7 @@ class LoginUIQT(QWidget):
     
     def initUI(self):
         self.main_layout = QVBoxLayout()
-        
+
         self.label_background = QLabel()
         self.label_background.setPixmap(app.view.var.background_view)
         self.label_background.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -55,13 +55,10 @@ class LoginUIQT(QWidget):
         self.box = QGroupBox()
         self.box.setStyleSheet("background-color: transparent")
         self.box.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.box.setContentsMargins(500, 160, 500, 200)
         
         self.layout_login = QFrame(self.box)
-        self.layout_login.setStyleSheet("background-color: #ececec")
-        self.layout_login.setMaximumSize(350, 500)
+        self.layout_login.setGeometry(QRect(500,150,350,500))
         self.frame_login= QVBoxLayout()
-        self.layout_login.setGeometry(QRect(525, 160, 350, 500))
         self.layout_login.setLayout(self.frame_login)
         
         self.bg_layout = QStackedLayout()
@@ -74,49 +71,59 @@ class LoginUIQT(QWidget):
         self.frame_entry.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.frame_entry.setContentsMargins(15,10,15,50)
         
-        Label_login = QLabel()
-        Label_login.setPixmap(app.view.var.logo_view)
-        Label_login.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        Label_login.setContentsMargins(0,25,0,0)
-        self.frame_login.addWidget(Label_login)
+        self.label_login = QLabel()
+        self.label_login.setPixmap(app.view.var.logo_view)
+        self.label_login.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.label_login.setContentsMargins(0,25,0,0)
+        self.frame_login.addWidget(self.label_login)
 
-        label_account = QLabel("Username")
-        label_account.setStyleSheet("color: black")
-        label_account.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.frame_entry.addWidget(label_account)
+        self.label_account = QLabel("Username")
+        self.label_account.setStyleSheet("color: black")
+        self.label_account.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.frame_entry.addWidget(self.label_account)
 
-        account = QLineEdit()
-        account.setPlaceholderText('Enter your Username')
-        self.frame_entry.addWidget(account)
+        self.account = QLineEdit()
+        self.account.setPlaceholderText('Enter your Username')
+        self.frame_entry.addWidget(self.account)
 
-        label_password = QLabel("Password")
-        label_password.setStyleSheet("color: black")
-        label_password.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.frame_entry.addWidget(label_password)
+        self.label_password = QLabel("Password")
+        self.label_password.setStyleSheet("color: black")
+        self.label_password.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.frame_entry.addWidget(self.label_password)
 
-        password = QLineEdit()
-        password.setEchoMode(QLineEdit.EchoMode.Password)
-        password.setPlaceholderText('Enter your password')
-        self.frame_entry.addWidget(password)
+        self.password = QLineEdit()
+        self.password.setEchoMode(QLineEdit.EchoMode.Password)
+        self.password.setPlaceholderText('Enter your password')
+        self.frame_entry.addWidget(self.password)
 
-        label_forgot = QLabel("Forgot Password?")
-        label_forgot.setStyleSheet("color: black")
-        label_forgot.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.frame_entry.addWidget(label_forgot)
-        label_forgot.linkActivated.connect(partial(self.eventLoginEditClick))
+        self.label_forgot = QLabel("Forgot Password?")
+        self.label_forgot.setStyleSheet("color: black")
+        self.label_forgot.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.frame_entry.addWidget(self.label_forgot)
+        self.label_forgot.linkActivated.connect(partial(self.eventLoginEditClick))
 
         self.frame_login.addLayout(self.frame_entry)
         
-        button_login = QPushButton("Sign In")
-        button_login.setStyleSheet("color: black")
-        button_login.clicked.connect(partial(self.eventLoginClick, account, password))
-        button_login.setFixedWidth(200)
-        self.frame_login.addWidget(button_login)
+        self.button_login = QPushButton("Sign In")
+        self.button_login.setStyleSheet("color: black")
+        self.button_login.clicked.connect(partial(self.eventLoginClick, self.account, self.password))
+        self.button_login.setFixedWidth(200)
+        self.frame_login.addWidget(self.button_login)
 
         self.main_layout.addLayout(self.bg_layout)
         self.main_layout.addWidget(self.label_privacy)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.main_layout)
-
+        
     def setStyle(self):
+        with open("app/template/css/login/qline.css","r+") as file:
+            style= file.read()
+            self.account.setStyleSheet(style)
+            self.password.setStyleSheet(style)
+        
+        with open("app/template/css/login/qgroupbox.css","r+") as file:
+            style= file.read()
+            self.box.setStyleSheet(style)
+        
+
         
