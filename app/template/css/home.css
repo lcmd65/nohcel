@@ -1,0 +1,18 @@
+QTabWidget::tab-bar {
+    position: static;
+    padding-left: 15px;
+    padding-top: 15px;
+}
+
+QTabBar::tab {
+    background: #ececec;
+    color: black;
+    position: static;
+    padding: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+QTabBar::tab:selected {
+    background: lightgray;
+}
