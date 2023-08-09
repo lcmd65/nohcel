@@ -1,16 +1,27 @@
 QTabWidget::tab-bar {
-    padding-left: 15px;
-    padding-top: 15px;
+    position: absolute;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-color: #ececec;
+    background: #ececec;
+    border-radius: 0%;
+    border: 0% solid #ececec;
 }
 
 QTabBar::tab {
-    background: #ececec;
-    color: black;
-    padding: 5px;
-    padding-left: 5px;
-    padding-top: 5px;
+    background: #001c54;
+    background-color: #ececec;
+    color: #001c54;
+    padding: 5px 100px;
+    position: absolute;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    border-radius: 0%;
+    border: 0% solid #ececec;
 }
 
 QTabBar::tab:selected {
-    background: rgb(228, 228, 228);
+    background: #001c54;
+    color: #ececec;
 }

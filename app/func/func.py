@@ -41,5 +41,4 @@ def textToAudio(text):
         messagebox.showerror(title = "Error", message = e)
 
 def showAudio():
-    
-    return
+    pass

@@ -16,13 +16,18 @@ class LoginUIQT(QWidget):
         super().__init__()
         self.setWindowTitle("NOHCEL")
         self.resize(1980, 1080) 
-        self.setStyleSheet("background-color: #ececec")
+        self.setExternalVal()
+        self.initUI()
+        self.setStyleObject()
+        
+    def setExternalVal(self):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
         app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(120, 75, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
-        self.width = self.frameGeometry().width()
-        self.height = self.frameGeometry().height()
-        self.initUI()
-        self.setStyle()
+        
+    def setStyle(self, object, css_path):
+        with open(css_path,"r") as file:
+            style= file.read()
+            object.setStyleSheet(style)
     
     def eventLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True or\
@@ -30,7 +35,6 @@ class LoginUIQT(QWidget):
             self.home = HomeQT()
             self.home.show()
             self.close()
-            
         else:
             QMessageBox.critical(self, "Login", "Wrong Username or self.password")
     
@@ -115,15 +119,11 @@ class LoginUIQT(QWidget):
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.main_layout)
         
-    def setStyle(self):
-        with open("app/template/css/login/qline.css","r+") as file:
-            style= file.read()
-            self.account.setStyleSheet(style)
-            self.password.setStyleSheet(style)
-        
-        with open("app/template/css/login/qgroupbox.css","r+") as file:
-            style= file.read()
-            self.box.setStyleSheet(style)
+    def setStyleObject(self):
+        self.setStyleSheet("background-color: #ececec")
+        self.setStyle(self.account, "app/template/css/login/qline.css")
+        self.setStyle(self.password, "app/template/css/login/qline.css")
+        self.setStyle(self.box, "app/template/css/login/qgroupbox.css")
         
 
         
