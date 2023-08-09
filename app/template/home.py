@@ -16,7 +16,8 @@ from PyQt6.QtWidgets import (
     QTabWidget,
     QWidget,
     QMessageBox,
-    QFrame
+    QFrame,
+    QLineEdit
 )
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -94,7 +95,13 @@ class HomeQT(QMainWindow):
         self.nohcel_frame.setLayout(self.nohcel_frame_layout)
         self.nohcel_main_layout.addWidget(self.nohcel_frame)
         
-        self.conversation = 
+        self.nohcel_conversation_view = QLabel()
+        self.nohcel_frame_layout.addWidget(self.nohcel_conversation_view)
+        
+        self.nohcel_conversation_entry = QLineEdit()
+        self.nohcel_conversation_entry.setPlaceholderText("Nhập câu lệnh tại đây")
+        self.nohcel_frame_layout.addWidget(self.nohcel_conversation_entry)
+        
         
         self.nohcel_layout.addWidget(self.label_privacy)
         self.nohcel.setLayout(self.nohcel_layout)
@@ -119,6 +126,8 @@ class HomeQT(QMainWindow):
         self.setStyle(self.tabs, "app/template/css/home/tab.css")
         self.setStyle(self.data_view, "app/template/css/home/tree.css")
         self.setStyle(self.nohcel_frame, "app/template/css/home/frame.css")
+        self.setStyle(self.nohcel_conversation_view, "app/template/css/home/qlabel_conv.css")
+        self.setStyle(self.nohcel_conversation_entry, "app/template/css/home/qline_conv.css")
 
 def main():
     app = QApplication(sys.argv)
