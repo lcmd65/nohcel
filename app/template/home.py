@@ -108,15 +108,24 @@ class HomeQT(QMainWindow):
         self.setCentralWidget(self.tabs)
 
     def eventButtonClickEdit(self):
-        self.text.setText("Edit Param")
+        try:
+            from app.template.edit import EditQT
+            self._edit = EditQT()
+            self._edit.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
 
     def eventButtonClickHelp(self):
         QMessageBox.information(self, "Help", "This is the help message.")
+        
+    def eventButtonClickFile(self):
+        pass
+        
 
     def _createAction(self):
-        self.fileAction = QAction("&File Open", self)
-        self.editAction = QAction("&Edit Param", self, triggered=self.eventButtonClickEdit)
-        self.helpAction = QAction("$Help Infor", self, triggered=self.eventButtonClickHelp)
+        self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickFile)
+        self.editAction = QAction("&Edit Param", self, triggered= self.eventButtonClickEdit)
+        self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickHelp)
 
     def createLayoutLoginBox(self):
         pass
