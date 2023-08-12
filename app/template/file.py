@@ -1,10 +1,10 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 
-class HelpQT(QMainWindow):
+class FileQT(QMainWindow):
     def __init__(self, parent = None):
         super().__init__()
-        self.setWindowTitle("Help")
+        self.setWindowTitle("File")
         self.resize(500, 800)
         self.initUI()
         self.setStyleObject()

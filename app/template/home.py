@@ -91,7 +91,6 @@ class HomeQT(QMainWindow):
         
         self.nohcel_frame = QFrame()
         self.nohcel_frame_layout = QVBoxLayout()
-        self.nohcel_frame.setMinimumWidth(1000)
         self.nohcel_frame.setLayout(self.nohcel_frame_layout)
         self.nohcel_main_layout.addWidget(self.nohcel_frame)
         
@@ -102,8 +101,15 @@ class HomeQT(QMainWindow):
         self.nohcel_conversation_entry.setPlaceholderText("Nhập câu lệnh tại đây")
         self.nohcel_frame_layout.addWidget(self.nohcel_conversation_entry)
         
+        self.temp_data_view = QTreeView()
+        self.temp_data_view.setMinimumWidth(150)
+        self.temp_data_view.setMaximumWidth(250)
+        self.audio_layout.addWidget(self.temp_data_view)
         
+        self.nohcel_layout.addWidget(self.menu_bar)
         self.nohcel_layout.addWidget(self.label_privacy)
+        self.audio_layout.addWidget(self.label_privacy)
+        self.audio_record.setLayout(self.audio_layout)
         self.nohcel.setLayout(self.nohcel_layout)
         self.setCentralWidget(self.tabs)
 
@@ -116,11 +122,20 @@ class HomeQT(QMainWindow):
             QMessageBox.critical(self, "Edit", str(e))
 
     def eventButtonClickHelp(self):
-        QMessageBox.information(self, "Help", "This is the help message.")
+        try:
+            from app.template.help import HelpQT
+            self._help = HelpQT()
+            self._help.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
         
     def eventButtonClickFile(self):
-        pass
-        
+        try:
+            from app.template.file import FileQT
+            self._file = FileQT()
+            self._file.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
 
     def _createAction(self):
         self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickFile)
@@ -128,6 +143,7 @@ class HomeQT(QMainWindow):
         self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickHelp)
 
     def createLayoutLoginBox(self):
+        
         pass
     
     def setStyleObject(self):
