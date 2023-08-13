@@ -106,6 +106,11 @@ class HomeQT(QMainWindow):
         self.temp_data_view.setMaximumWidth(250)
         self.audio_layout.addWidget(self.temp_data_view)
         
+        self.temp_frame = QFrame()
+        self.temp_frame_layout = QVBoxLayout()
+        self.temp_frame.setLayout(self.temp_frame_layout)
+        self.audio_layout.addWidget(self.temp_frame)
+        
         self.nohcel_layout.addWidget(self.menu_bar)
         self.nohcel_layout.addWidget(self.label_privacy)
         self.audio_layout.addWidget(self.label_privacy)
@@ -153,6 +158,7 @@ class HomeQT(QMainWindow):
         self.setStyle(self.nohcel_frame, "app/template/css/home/frame.css")
         self.setStyle(self.nohcel_conversation_view, "app/template/css/home/qlabel_conv.css")
         self.setStyle(self.nohcel_conversation_entry, "app/template/css/home/qline_conv.css")
+        self.setStyle(self.temp_frame, 'app/template/css/home/temp/qframe.css')
 
 def main():
     app = QApplication(sys.argv)

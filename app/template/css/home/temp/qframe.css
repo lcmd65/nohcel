@@ -1,0 +1,15 @@
+QFrame {
+    border-radius: 8px;
+    background-color: #ebebeb;
+    margin-left: 5px;
+    border: 0%;
+}
+
+QFrame#temp {
+    border-radius: 8px;
+    background-color: #e3e8eb;
+    margin-top: 5px;
+    margin-left: 5px;
+    position: absolute;
+    padding: 100% 80%;
+}
