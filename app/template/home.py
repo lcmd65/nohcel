@@ -3,6 +3,7 @@ import random
 import typing
 import app.view.var
 from functools import partial
+from app.func.func import audioMicroToText
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTreeView,
@@ -112,15 +113,35 @@ class HomeQT(QMainWindow):
         self.temp_data_view = QTreeView()
         self.temp_data_view.setMinimumWidth(150)
         self.temp_data_view.setMaximumWidth(250)
-        self.audio_layout.addWidget(self.temp_data_view) 
-        self.button_record = QPushButton()
-        self.set_icon(self.button_record, 'app/images/icons/microphone.png')
-        self.audio_layout.addWidget(self.button_record)
+        self.audio_layout.addWidget(self.temp_data_view)
         
         self.temp_frame = QFrame()
         self.temp_frame_layout = QVBoxLayout()
         self.temp_frame.setLayout(self.temp_frame_layout)
         self.audio_layout.addWidget(self.temp_frame)
+        
+        self.audio_temp_frame = QFrame()
+        self.audio_temp_frame_layout = QVBoxLayout()
+        self.audio_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.audio_temp_frame.setLayout(self.audio_temp_frame_layout)
+        self.temp_frame_layout.addWidget(self.audio_temp_frame)
+        
+        self.label_temp_frame = QFrame()
+        self.label_temp_frame.setObjectName("label")
+        self.label_temp_frame_layout = QVBoxLayout()
+        self.label_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        self.label_temp_frame.setLayout(self.label_temp_frame_layout)
+        self.temp_frame_layout.addWidget(self.label_temp_frame)
+        
+        self.label_view = QLabel()
+        self.label_view.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        self.label_temp_frame_layout.addWidget(self.label_view)
+        
+        self.button_record = QPushButton()
+        self.button_record.clicked.connect(partial(self.eventClickButtonAudioRecord, self.label_view))
+        self.set_icon(self.button_record, 'app/images/icons/microphone.png')
+        self.audio_temp_frame_layout.addWidget(self.button_record)
+        self.audio_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.nohcel_layout.addWidget(self.menu_bar)
         self.nohcel_layout.addWidget(self.label_privacy)
@@ -152,6 +173,11 @@ class HomeQT(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "Edit", str(e))
 
+    def eventClickButtonAudioRecord(self, label):
+        text = audioMicroToText()
+        label.clear()
+        label.setText(text)
+        
     def _createAction(self):
         self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickFile)
         self.editAction = QAction("&Edit Param", self, triggered= self.eventButtonClickEdit)
@@ -168,8 +194,10 @@ class HomeQT(QMainWindow):
         self.setStyle(self.nohcel_frame, "app/template/css/home/frame.css")
         self.setStyle(self.nohcel_conversation_view, "app/template/css/home/qlabel_conv.css")
         self.setStyle(self.nohcel_conversation_entry, "app/template/css/home/qline_conv.css")
-        self.setStyle(self.temp_frame, 'app/template/css/home/temp/qframe.css')
+        self.setStyle(self.temp_data_view, 'app/template/css/home/temp/qframe.css')
         self.setStyle(self.button_record, "app/template/css/home/temp/button.css")
+        self.setStyle(self.label_view,  "app/template/css/home/temp/label.css")
+        self.setStyle(self.label_temp_frame, 'app/template/css/home/temp/qframe.css')
 
 def main():
     app = QApplication(sys.argv)
@@ -179,4 +207,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 # python3 app/template/home.py

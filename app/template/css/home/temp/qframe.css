@@ -1,15 +1,13 @@
 QFrame {
     border-radius: 8px;
-    background-color: #ebebeb;
+    background-color: #ffffff;
     margin-left: 5px;
-    border: 0%;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border-width: 1px;
 }
 
-QFrame#temp {
-    border-radius: 8px;
-    background-color: #e3e8eb;
-    margin-top: 5px;
-    margin-left: 5px;
-    position: absolute;
-    padding: 100% 80%;
+QFrame#label {
+    max-height: 80px;
+    border: 0px;
 }

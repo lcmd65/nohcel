@@ -1,7 +1,7 @@
 from functools import partial
 import speech_recognition as sr
 import pyaudio
-from tkinter import messagebox
+from AppKit import NSSpeechSynthesizer
 from gtts import gTTS
 import playsound
 import time
@@ -16,15 +16,23 @@ def sequence(*functions):
 
 def audioMicroToText():
     """ processing audio from microphone """
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio = r.listen(source)
-        try:
+    speechSynthesizer = NSSpeechSynthesizer
+    speech = speechSynthesizer.alloc().init()
+    speech.setVoice_("com.apple.speech.synthesis.voice.Alex")
+    speech.setVolume_(1.0)
+    speech.setRate_(200)
+    speech.startSpeakingString_('Hi! I am Nohcel')
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = r.listen(source)
             text = r.recognize_google(audio,language="vi-VI")
-            text = text.processingTest()
+                # The `processingTest()` method is not available in macOS Ventura.
+                # You can remove this line or replace it with another method to process the text.
+                # text = text.processingTest()
             return text
-        except Exception as e:
-            messagebox.showerror(title = "Error", message = e)
+    except Exception as e:
+        print(e)
 
 def audioToText(audio):
     """ task here """
@@ -38,7 +46,7 @@ def textToAudio(text):
         output.save("".join(["output/", str(time.time),".mp3"]))
         # playsound.playsound("".join(["output/", str(time.time),".mp3"]), True)
     except Exception as e:
-        messagebox.showerror(title = "Error", message = e)
+        print(e)
 
 def showAudio():
     pass
