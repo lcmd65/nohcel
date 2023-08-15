@@ -45,7 +45,14 @@ class HomeQT(QMainWindow):
             object.setStyleSheet(style)
         file.close()
     
-    def initUI(self):
+    def set_icon(self, button, image_path):
+        """Sets the icon of the button to the image at the specified path."""
+        pixmap = QPixmap(image_path).scaled(50, 50, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
+        icon = QIcon(pixmap)
+        button.setIcon(icon)
+        button.setIconSize(pixmap.rect().size())
+    
+    def initUI(self): 
         """ Mennu """
         self.menu_bar = QMenuBar()
         
@@ -105,7 +112,10 @@ class HomeQT(QMainWindow):
         self.temp_data_view = QTreeView()
         self.temp_data_view.setMinimumWidth(150)
         self.temp_data_view.setMaximumWidth(250)
-        self.audio_layout.addWidget(self.temp_data_view)
+        self.audio_layout.addWidget(self.temp_data_view) 
+        self.button_record = QPushButton()
+        self.set_icon(self.button_record, 'app/images/icons/microphone.png')
+        self.audio_layout.addWidget(self.button_record)
         
         self.temp_frame = QFrame()
         self.temp_frame_layout = QVBoxLayout()
@@ -159,6 +169,7 @@ class HomeQT(QMainWindow):
         self.setStyle(self.nohcel_conversation_view, "app/template/css/home/qlabel_conv.css")
         self.setStyle(self.nohcel_conversation_entry, "app/template/css/home/qline_conv.css")
         self.setStyle(self.temp_frame, 'app/template/css/home/temp/qframe.css')
+        self.setStyle(self.button_record, "app/template/css/home/temp/button.css")
 
 def main():
     app = QApplication(sys.argv)
@@ -168,5 +179,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 # python3 app/template/home.py
