@@ -101,6 +101,7 @@ class HomeQT(QMainWindow):
         self.nohcel_conversation_entry.setPlaceholderText("Nhập câu lệnh tại đây")
         self.nohcel_frame_layout.addWidget(self.nohcel_conversation_entry)
         
+        self.audio_record.setLayout(self.audio_layout)
         self.temp_data_view = QTreeView()
         self.temp_data_view.setMinimumWidth(150)
         self.temp_data_view.setMaximumWidth(250)
@@ -114,7 +115,6 @@ class HomeQT(QMainWindow):
         self.nohcel_layout.addWidget(self.menu_bar)
         self.nohcel_layout.addWidget(self.label_privacy)
         self.audio_layout.addWidget(self.label_privacy)
-        self.audio_record.setLayout(self.audio_layout)
         self.nohcel.setLayout(self.nohcel_layout)
         self.setCentralWidget(self.tabs)
 
