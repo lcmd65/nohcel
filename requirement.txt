@@ -1,0 +1,5 @@
+PyQt6==6.5.2
+AppKit==0.2.8
+pyproject-toml==0.0.10
+PyGObject==3.44.1
+

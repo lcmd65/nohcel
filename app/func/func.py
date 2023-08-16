@@ -34,6 +34,21 @@ def audioMicroToText():
     except Exception as e:
         print(e)
 
+def audioMicroToText2():
+    
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = r.listen(source)
+            text = r.recognize_google(audio,language="vi-VI")
+                # The `processingTest()` method is not available in macOS Ventura.
+                # You can remove this line or replace it with another method to process the text.
+                # text = text.processingTest()
+            return text
+    except Exception as e:
+        print(e)
+
+
 def audioToText(audio):
     """ task here """
     text = None
