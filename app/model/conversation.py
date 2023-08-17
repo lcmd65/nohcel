@@ -83,10 +83,22 @@ class Audio(Statement):
     def __init__(self, audio):
         self._audio = audio
         Statement.__init__(self, audioToText(audio))
+        
+class Conver():
+    def __init__(self):
+        self.bot_ = []
+        self.user_ = []
+    
+    
+    
+    
+    
+    
+    
+    
     
 if __name__ == "__main__":
-    data = Statement("hôm nay đau đầu quá")
-    data.display()
+    pass
 # python3 app/model/conversation.py
 
 

@@ -25,14 +25,10 @@ def homeViewQT():
         QMessageBox.critical(env.root_main, "Error", error_message)
         
 def loginViewQT():
-    try:
-        from app.template.login import LoginUIQT
-        env.app = QApplication(sys.argv)
-        login = LoginUIQT()
-        login.show()
-        env.app.exec()
-    except Exception as e:
-        env.root_main = QWidget()
-        error_message = str(e)
-        QMessageBox.critical(env.root_main, "Error", error_message)
+    from app.template.login import LoginUIQT
+    env.app = QApplication(sys.argv)
+    login = LoginUIQT()
+    login.show()
+    env.app.exec()
+
 

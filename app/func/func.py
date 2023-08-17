@@ -1,7 +1,7 @@
 from functools import partial
 import speech_recognition as sr
+import pyttsx3
 import pyaudio
-from AppKit import NSSpeechSynthesizer
 from gtts import gTTS
 import playsound
 import time
@@ -14,14 +14,13 @@ def sequence(*functions):
         return return_value
     return func
 
+def speakText(command):
+    # Initialize the engine
+    engine = pyttsx3.init()
+    engine.say(command)
+    engine.runAndWait()
+     
 def audioMicroToText():
-    """ processing audio from microphone """
-    speechSynthesizer = NSSpeechSynthesizer
-    speech = speechSynthesizer.alloc().init()
-    speech.setVoice_("com.apple.speech.synthesis.voice.Alex")
-    speech.setVolume_(1.0)
-    speech.setRate_(200)
-    speech.startSpeakingString_('Hi! I am Nohcel')
     try:
         r = sr.Recognizer()
         with sr.Microphone() as source:
@@ -35,7 +34,7 @@ def audioMicroToText():
         print(e)
 
 def audioMicroToText2():
-    
+    speakText("Hi! I am Nohcel")
     try:
         r = sr.Recognizer()
         with sr.Microphone() as source:
@@ -65,3 +64,8 @@ def textToAudio(text):
 
 def showAudio():
     pass
+
+if __name__ =="__main__":
+    speakText("Hi")
+    
+# python3 app/func/func.py
