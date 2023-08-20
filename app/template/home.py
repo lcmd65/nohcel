@@ -66,6 +66,7 @@ class HomeQT(QMainWindow):
         self.setWindowTitle("VinBigData NOHCEL")
         self.resize(1980, 1080)
         self.eventCreateAction()
+        self.createMenuBar()
         self.eventSetExternalVal()
         self.conversation = QStandardItemModel()
         self.conversation_num_shot = 0
@@ -85,8 +86,12 @@ class HomeQT(QMainWindow):
     
     # external variable background and icon init
     def eventSetExternalVal(self):
-        app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
-        app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(80, 50, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
+        app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801,\
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,\
+            Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
+        app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(80, 50, \
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding, \
+            Qt.TransformationMode.SmoothTransformation)
 
     def setStyle(self, object, css_path):
         with open(css_path,"r") as file:
@@ -95,11 +100,13 @@ class HomeQT(QMainWindow):
         file.close()
     
     def initThreadingWorker(self):
-        self.worker = VoiceWorker()
+        app.environment.worker = VoiceWorker()
     
     def setIconButtonRecord(self, button, image_path):
         """Sets the icon of the button to the image at the specified path."""
-        pixmap = QPixmap(image_path).scaled(50, 50, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
+        pixmap = QPixmap(image_path).scaled(50, 50, \
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding, \
+            Qt.TransformationMode.SmoothTransformation)
         icon = QIcon(pixmap)
         button.setIcon(icon)
         button.setIconSize(pixmap.rect().size())
@@ -110,7 +117,7 @@ class HomeQT(QMainWindow):
             self.edit_toplevel = EditQT()
             self.edit_toplevel.show()
         except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
+            QMessageBox.critical(None, "Error", repr(e))
     
     def eventButtonClickedLogout(self):
         self.createLayoutLoginBox()
@@ -122,7 +129,7 @@ class HomeQT(QMainWindow):
             self.help_toplevel = HelpQT()
             self.help_toplevel.show()
         except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
+            QMessageBox.critical(None, "Error", repr(e))
         
     def eventButtonClickedFile(self):
         try:
@@ -130,11 +137,11 @@ class HomeQT(QMainWindow):
             self.file_toplevel = FileQT()
             self.file_toplevel.show()
         except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
+            QMessageBox.critical(None, "Error", repr(e))
             
     def eventHomeProcessingLLM(self, text):
         """ task 1         """  
-              
+        
         pass
     
     # thử nghiệm API speech to text trên sys
@@ -161,14 +168,14 @@ class HomeQT(QMainWindow):
     def eventButtonClickedAudioRecordQThread(self):
         app.environment.thread = QThread()
         app.environment.thread.start()
-        self.worker.moveToThread(app.environment.thread)
-        self.worker.task()
-        app.environment.thread.destroyed()
-    
+        app.environment.worker.moveToThread(app.environment.thread)
+        app.environment.worker.task()
+            
     def eventCreateAction(self):
-        self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickedFile)
-        self.editAction = QAction("&Edit Param", self, triggered= self.eventButtonClickedEdit)
-        self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickedHelp)
+        self.file_action = QAction("&File Open", self, triggered = self.eventButtonClickedFile)
+        self.edit_action = QAction("&Edit Param", self, triggered= self.eventButtonClickedEdit)
+        self.help_action = QAction("$Help Infor", self, triggered= self.eventButtonClickedHelp)
+        self.login_action = QAction("&Use other Account", self, triggered= self.eventButtonClickedLogout)
 
     def createLayoutLoginBox(self):
         # circle import for run login view again from home view
@@ -178,20 +185,23 @@ class HomeQT(QMainWindow):
             self.login_toplevel.show()
             self.close()    
         except Exception as e:
-            print(e)
+            QMessageBox.critical(None, "Error", repr(e))
     
-    def initUI(self): 
+    def createMenuBar(self):
         """ Mennu """
         self.menu_bar = QMenuBar()
         
         self.file_menu = self.menu_bar.addMenu("&File")
         self.edit_menu = self.menu_bar.addMenu("&Edit")
         self.help_menu = self.menu_bar.addMenu("&Help")
+        self.login_menu = self.menu_bar.addMenu("&Exit")
 
-        self.file_menu.addAction(self.fileAction)
-        self.edit_menu.addAction(self.editAction)
-        self.help_menu.addAction(self.helpAction)
+        self.file_menu.addAction(self.file_action)
+        self.edit_menu.addAction(self.edit_action)
+        self.help_menu.addAction(self.help_action)
+        self.login_menu.addAction(self.login_action)
         
+    def initUI(self): 
         """ label and logo """
         self.label_background = QLabel()
         self.label_background.setPixmap(app.view.var.background_view)
@@ -265,7 +275,7 @@ class HomeQT(QMainWindow):
         self.label_view = QLabel()
         self.label_view.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.label_temp_frame_layout.addWidget(self.label_view)
-        self.worker.textRecord.connect(self.label_view.setText)
+        app.environment.worker.textRecord.connect(self.label_view.setText)
         
         self.button_record = QPushButton()
         self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)

@@ -3,3 +3,6 @@ app = None
 
 # env for multithreading
 thread = None
+
+#
+worker = None

@@ -35,7 +35,7 @@ class LoginUIQT(QWidget):
             self.home = homeViewQT()
             self.close()
         else:
-            QMessageBox.critical(self, "Login", "Wrong Username or password")
+            QMessageBox.critical(None, "Error", "Wrong username or password")
     
     def eventChangePosition(self):
         self.width = self.frameGeometry().width()
