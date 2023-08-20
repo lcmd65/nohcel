@@ -133,8 +133,7 @@ class HomeQT(QMainWindow):
             QMessageBox.critical(self, "Edit", str(e))
             
     def eventHomeProcessingLLM(self, text):
-        """ task 1         
-        """  
+        """ task 1         """  
               
         pass
     
