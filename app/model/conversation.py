@@ -88,6 +88,7 @@ class Conver():
     def __init__(self):
         self.bot_ = []
         self.user_ = []
+        
     
     
     

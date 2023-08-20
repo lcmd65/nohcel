@@ -1,9 +1,10 @@
 from functools import partial
 import speech_recognition as sr
-import pyttsx3
-import pyaudio
+import pyttsx4
 from gtts import gTTS
 import playsound
+import pyaudio
+import threading
 import time
 
 def sequence(*functions):
@@ -16,16 +17,19 @@ def sequence(*functions):
 
 def speakText(command):
     # Initialize the engine
-    engine = pyttsx3.init()
+    engine = pyttsx4.init()
+    engine.setProperty('rate', 150)
+    engine.setProperty('volume', 0.5)
     engine.say(command)
     engine.runAndWait()
-     
+
 def audioMicroToText():
     try:
         r = sr.Recognizer()
         with sr.Microphone() as source:
-            audio = r.listen(source)
-            text = r.recognize_google(audio,language="vi-VI")
+            r.adjust_for_ambient_noise(source)
+            audio = r.listen(source, phrase_time_limit= 10)
+            text = r.recognize_google(audio, language="vi-VI")
                 # The `processingTest()` method is not available in macOS Ventura.
                 # You can remove this line or replace it with another method to process the text.
                 # text = text.processingTest()
@@ -33,25 +37,17 @@ def audioMicroToText():
     except Exception as e:
         print(e)
 
-def audioMicroToText2():
-    speakText("Hi! I am Nohcel")
+def audioToText(audio_path):
+    """ audio file to text """
     try:
         r = sr.Recognizer()
-        with sr.Microphone() as source:
-            audio = r.listen(source)
-            text = r.recognize_google(audio,language="vi-VI")
-                # The `processingTest()` method is not available in macOS Ventura.
-                # You can remove this line or replace it with another method to process the text.
-                # text = text.processingTest()
+        with audio_path as source:
+            r.adjust_for_ambient_noise(source)
+            audio = r.record(source)
+            text = r.recognize_google(audio, language="vi-VI")
             return text
     except Exception as e:
         print(e)
-
-
-def audioToText(audio):
-    """ task here """
-    text = None
-    return text
             
 def textToAudio(text):
     """ processing text to audio by google api """
@@ -63,9 +59,23 @@ def textToAudio(text):
         print(e)
 
 def showAudio():
+    """ task """
     pass
 
-if __name__ =="__main__":
-    speakText("Hi")
+## threading 
+
+def audioMicroToTextThread():
+    th = threading.Thread(target= partial(audioMicroToText))
+    th.daemon = True
+    th.start()
+    
+def speakTextThread(command):
+    th = threading.Thread(target= partial(speakText, command))
+    th.daemon = True
+    th.start()
+    
+    
+if __name__ == "__main__":
+    print(audioMicroToText())
     
 # python3 app/func/func.py

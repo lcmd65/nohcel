@@ -2,5 +2,6 @@ QLabel {
     padding: 40px 100%;
     background-color: #ffffff;
     border-color: #d0e3ff;
+    color: #000000;
     border: 1px;
 }

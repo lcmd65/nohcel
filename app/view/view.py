@@ -1,28 +1,16 @@
 import app.view.var
 import app.images
 import sys
+import threading
 from PyQt6.QtWidgets import (
-    QWidget,
-    QApplication,
-    QMessageBox
+    QApplication
 )
 import app.environment as env
 
-"""
-qt view
-"""
-
 def homeViewQT():
-    try:
-        from app.template.home import HomeQT
-        window = QApplication.instance().activeWindow()
-        window.close()
-        home = HomeQT()
-        home.show()
-    except Exception as e:
-        env.root_main = QWidget()
-        error_message = str(e)
-        QMessageBox.critical(env.root_main, "Error", error_message)
+    from app.template.home import HomeQT
+    home = HomeQT()
+    home.show()
         
 def loginViewQT():
     from app.template.login import LoginUIQT
@@ -31,4 +19,10 @@ def loginViewQT():
     login.show()
     env.app.exec()
 
+###
+
+def homeViewThreading():
+    th = threading.Thread(target= homeViewQT)
+    th.daemon = True
+    th.start()
 

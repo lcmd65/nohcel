@@ -1,4 +1,3 @@
-import sys
 import app.environment
 import app.view.var
 from app.view.view import homeViewQT
@@ -10,7 +9,9 @@ from functools import partial
 from app.func.database import userAuthentication
 from PyQt6.QtWidgets import QMessageBox
 
-
+################################################################################################################################################################################
+# QWWidget for login ###########################################################################################################################################################
+################################################################################################################################################################################
 class LoginUIQT(QWidget):
     def __init__(self, parent = None):
         super().__init__()
@@ -18,7 +19,7 @@ class LoginUIQT(QWidget):
         self.resize(1980, 1080) 
         self.setExternalVal()
         self.initUI()
-        self.setStyleObject()
+        self.setObjectStyleCSS()
         
     def setExternalVal(self):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
@@ -32,8 +33,7 @@ class LoginUIQT(QWidget):
     def eventLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True or\
             (account.text() == "dat.lemindast" and password.text() == "1"):
-            self.home = HomeQT()
-            self.home.show()
+            self.home = homeViewQT()
             self.close()
         else:
             QMessageBox.critical(self, "Login", "Wrong Username or self.password")
@@ -119,11 +119,12 @@ class LoginUIQT(QWidget):
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(self.main_layout)
         
-    def setStyleObject(self):
+    def setObjectStyleCSS(self):
         self.setStyleSheet("background-color: #ececec")
         self.setStyle(self.account, "app/template/css/login/qline.css")
         self.setStyle(self.password, "app/template/css/login/qline.css")
         self.setStyle(self.box, "app/template/css/login/qgroupbox.css")
+        self.setStyle(self.layout_login, "app/template/css/login/qframe.css")
         
 
         

@@ -1,9 +1,14 @@
+#############################################################################################################################################################################
+# using NLP for processing text from audio record
+# using multithreading for except threaeding (process the demon of while loop Qapplication)
+# speech_recognition api
 import sys
-import random
-import typing
+import speech_recognition as sr
+import threading
 import app.view.var
+import app.environment
 from functools import partial
-from app.func.func import audioMicroToText
+from app.func.func import audioMicroToText, speakText
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTreeView,
@@ -23,20 +28,61 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
+################################################################################################################################################################################
+# QObject for Recording with multithreading while running QApplication #########################################################################################################
+################################################################################################################################################################################
+class VoiceWorker(QObject):
+    textRecord = pyqtSignal(str)
+    textReply = pyqtSignal(str)
+    
+    @pyqtSlot()
+    def task(self):
+        recognizer_engine = sr.Recognizer()
+        micro_engine = sr.Microphone()
+        self.textReply.emit("Say something!")
+        speakText("Say something!")
+        with micro_engine as source:
+            audio = recognizer_engine.listen(source, phrase_time_limit= 10)
+            self.textReply.emit("Got it! Now to recognize it...")
+            speakText("Got it! Now to recognize it...")
+            try:
+                value = recognizer_engine.recognize_google(audio)
+                self.textRecord.emit(value)
+                self.textReply.emit("{value}".format(str))
+                speakText("{value}".format(str))
+            except sr.UnknownValueError:
+                self.textReply.emit("Oops")
+                speakText("Oops")
+
+################################################################################################################################################################################
+# QMainWindow Home view of Project #############################################################################################################################################
+################################################################################################################################################################################
 class HomeQT(QMainWindow):
     def __init__(self, parent = None):
         super().__init__()
+        
+        # parent & event 
         self.setWindowTitle("VinBigData NOHCEL")
         self.resize(1980, 1080)
-        self._createAction()
-        self.setExternalVal()
+        self.eventCreateAction()
+        self.eventSetExternalVal()
+        self.conversation = QStandardItemModel()
+        self.conversation_num_shot = 0
+        
+        # audio thread in environment variable
+        self.initThreadingWorker()
+        
+        # toplevel in menu button event clicked
+        self.edit_toplevel = None
+        self.help_toplevel = None
+        self.file_toplevel = None
+        
+        # ui
         self.initUI()
-        self.setStyleObject()
-        self._edit = None
-        self._help = None
-        self._file = None
-
-    def setExternalVal(self):
+        self.setObjectStyleCSS()   
+    
+    # external variable background and icon init
+    def eventSetExternalVal(self):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
         app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(80, 50, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
 
@@ -46,24 +92,96 @@ class HomeQT(QMainWindow):
             object.setStyleSheet(style)
         file.close()
     
-    def set_icon(self, button, image_path):
+    def initThreadingWorker(self):
+        self.worker = VoiceWorker()
+    
+    def setIconButtonRecord(self, button, image_path):
         """Sets the icon of the button to the image at the specified path."""
         pixmap = QPixmap(image_path).scaled(50, 50, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
         icon = QIcon(pixmap)
         button.setIcon(icon)
         button.setIconSize(pixmap.rect().size())
     
+    def eventButtonClickedEdit(self):
+        try:
+            from app.template.edit import EditQT
+            self.edit_toplevel = EditQT()
+            self.edit_toplevel.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
+
+    def eventButtonClickedHelp(self):
+        try:
+            from app.template.help import HelpQT
+            self.help_toplevel = HelpQT()
+            self.help_toplevel.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
+        
+    def eventButtonClickedFile(self):
+        try:
+            from app.template.file import FileQT
+            self.file_toplevel = FileQT()
+            self.file_toplevel.show()
+        except Exception as e:
+            QMessageBox.critical(self, "Edit", str(e))
+            
+    def eventHomeProcessingLLM(self, text):
+        """ task 1         
+        """  
+              
+        pass
+    
+    # thử nghiệm API speech to text trên sys
+    def eventButtonClickedAudioRecord(self):
+        if not self.conversation:
+            speakText("Hi!, I am Nohcel, chat Assistant developed by VinBigdata")
+        else:
+            speakText("How can i help you?")
+        text = audioMicroToText()
+        self.label_view.clear()
+        self.label_view.setText(text)
+        self.label_view.adjustSize() 
+        item = QStandardItem(text)
+        self.conversation.appendRow(item)
+        self.temp_data_view.setModel(self.conversation)
+        self.eventHomeProcessingLLM(text)
+
+    def eventButtonClickedAudioRecordThread(self):
+        threading_new_for_record_loop = threading.Thread(target= partial(self.eventButtonClickedAudioRecord))
+        threading_new_for_record_loop.daemon = True
+        threading_new_for_record_loop.start()
+    
+    # test API speech to text trên QThread
+    def eventButtonClickedAudioRecordQThread(self):
+        app.environment.thread = QThread()
+        app.environment.thread.start()
+        self.worker.moveToThread(app.environment.thread)
+        self.worker.task()
+        app.environment.thread.destroyed()
+    
+    def eventCreateAction(self):
+        self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickedFile)
+        self.editAction = QAction("&Edit Param", self, triggered= self.eventButtonClickedEdit)
+        self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickedHelp)
+
+    def createLayoutLoginBox(self):
+        """ task 2 
+        """
+        
+        pass
+    
     def initUI(self): 
         """ Mennu """
         self.menu_bar = QMenuBar()
         
-        file_menu = self.menu_bar.addMenu("&File")
-        edit_menu = self.menu_bar.addMenu("&Edit")
-        help_menu = self.menu_bar.addMenu("&Help")
+        self.file_menu = self.menu_bar.addMenu("&File")
+        self.edit_menu = self.menu_bar.addMenu("&Edit")
+        self.help_menu = self.menu_bar.addMenu("&Help")
 
-        file_menu.addAction(self.fileAction)
-        edit_menu.addAction(self.editAction)
-        help_menu.addAction(self.helpAction)
+        self.file_menu.addAction(self.fileAction)
+        self.edit_menu.addAction(self.editAction)
+        self.help_menu.addAction(self.helpAction)
         
         """ label and logo """
         self.label_background = QLabel()
@@ -113,6 +231,8 @@ class HomeQT(QMainWindow):
         self.temp_data_view = QTreeView()
         self.temp_data_view.setMinimumWidth(150)
         self.temp_data_view.setMaximumWidth(250)
+        self.temp_data_view.setUpdatesEnabled(True)
+        self.temp_data_view.setModel(self.conversation)
         self.audio_layout.addWidget(self.temp_data_view)
         
         self.temp_frame = QFrame()
@@ -136,10 +256,11 @@ class HomeQT(QMainWindow):
         self.label_view = QLabel()
         self.label_view.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.label_temp_frame_layout.addWidget(self.label_view)
+        self.worker.textRecord.connect(self.label_view.setText)
         
         self.button_record = QPushButton()
-        self.button_record.clicked.connect(partial(self.eventClickButtonAudioRecord, self.label_view))
-        self.set_icon(self.button_record, 'app/images/icons/microphone.png')
+        self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)
+        self.setIconButtonRecord(self.button_record, 'app/images/icons/microphone.png')
         self.audio_temp_frame_layout.addWidget(self.button_record)
         self.audio_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
@@ -148,46 +269,9 @@ class HomeQT(QMainWindow):
         self.audio_layout.addWidget(self.label_privacy)
         self.nohcel.setLayout(self.nohcel_layout)
         self.setCentralWidget(self.tabs)
-
-    def eventButtonClickEdit(self):
-        try:
-            from app.template.edit import EditQT
-            self._edit = EditQT()
-            self._edit.show()
-        except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
-
-    def eventButtonClickHelp(self):
-        try:
-            from app.template.help import HelpQT
-            self._help = HelpQT()
-            self._help.show()
-        except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
-        
-    def eventButtonClickFile(self):
-        try:
-            from app.template.file import FileQT
-            self._file = FileQT()
-            self._file.show()
-        except Exception as e:
-            QMessageBox.critical(self, "Edit", str(e))
-
-    def eventClickButtonAudioRecord(self, label):
-        text = audioMicroToText()
-        label.clear()
-        label.setText(text)
-        
-    def _createAction(self):
-        self.fileAction = QAction("&File Open", self, triggered = self.eventButtonClickFile)
-        self.editAction = QAction("&Edit Param", self, triggered= self.eventButtonClickEdit)
-        self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickHelp)
-
-    def createLayoutLoginBox(self):
-        
-        pass
     
-    def setStyleObject(self):
+    # style css setting for all object of home page
+    def setObjectStyleCSS(self):
         self.setStyleSheet("background-color: #ececec")
         self.setStyle(self.tabs, "app/template/css/home/tab.css")
         self.setStyle(self.data_view, "app/template/css/home/tree.css")
