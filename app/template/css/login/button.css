@@ -1,0 +1,10 @@
+QPushButton {
+    border-radius: 8px;
+    border: 0px;
+    position: relative;
+}
+
+QPushButton::placeholder {
+    background-color: #32316d;
+    color: #ffffff;
+}

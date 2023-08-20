@@ -7,6 +7,7 @@ import speech_recognition as sr
 import threading
 import app.view.var
 import app.environment
+import gc
 from functools import partial
 from app.func.func import audioMicroToText, speakText
 from PyQt6.QtWidgets import (
@@ -76,6 +77,7 @@ class HomeQT(QMainWindow):
         self.edit_toplevel = None
         self.help_toplevel = None
         self.file_toplevel = None
+        self.login_toplevel = None
         
         # ui
         self.initUI()
@@ -109,6 +111,10 @@ class HomeQT(QMainWindow):
             self.edit_toplevel.show()
         except Exception as e:
             QMessageBox.critical(self, "Edit", str(e))
+    
+    def eventButtonClickedLogout(self):
+        self.createLayoutLoginBox()
+        gc.collect()
 
     def eventButtonClickedHelp(self):
         try:
@@ -166,10 +172,14 @@ class HomeQT(QMainWindow):
         self.helpAction = QAction("$Help Infor", self, triggered= self.eventButtonClickedHelp)
 
     def createLayoutLoginBox(self):
-        """ task 2 
-        """
-        
-        pass
+        # circle import for run login view again from home view
+        try:
+            from app.template.login import LoginUIQT
+            self.login_toplevel = LoginUIQT()
+            self.login_toplevel.show()
+            self.close()    
+        except Exception as e:
+            print(e)
     
     def initUI(self): 
         """ Mennu """

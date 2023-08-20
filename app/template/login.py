@@ -30,19 +30,18 @@ class LoginUIQT(QWidget):
             style= file.read()
             object.setStyleSheet(style)
     
-    def eventLoginClick(self, account, password):
-        if userAuthentication(account.text(), password.text()) == True or\
-            (account.text() == "dat.lemindast" and password.text() == "1"):
+    def eventButtonClickedLoginClick(self, account, password):
+        if userAuthentication(account.text(), password.text()) == True:
             self.home = homeViewQT()
             self.close()
         else:
-            QMessageBox.critical(self, "Login", "Wrong Username or self.password")
+            QMessageBox.critical(self, "Login", "Wrong Username or password")
     
     def eventChangePosition(self):
         self.width = self.frameGeometry().width()
         self.height = self.frameGeometry().height()
 
-    def eventLoginEditClick(self):
+    def eventButtonClickedLoginEditClick(self):
         pass
     
     def initUI(self):
@@ -104,13 +103,13 @@ class LoginUIQT(QWidget):
         self.label_forgot.setStyleSheet("color: black")
         self.label_forgot.setCursor(Qt.CursorShape.PointingHandCursor)
         self.frame_entry.addWidget(self.label_forgot)
-        self.label_forgot.linkActivated.connect(partial(self.eventLoginEditClick))
+        self.label_forgot.linkActivated.connect(partial(self.eventButtonClickedLoginEditClick))
 
         self.frame_login.addLayout(self.frame_entry)
         
         self.button_login = QPushButton("Sign In")
         self.button_login.setStyleSheet("color: black")
-        self.button_login.clicked.connect(partial(self.eventLoginClick, self.account, self.password))
+        self.button_login.clicked.connect(partial(self.eventButtonClickedLoginClick, self.account, self.password))
         self.button_login.setFixedWidth(200)
         self.frame_login.addWidget(self.button_login)
 
@@ -125,6 +124,7 @@ class LoginUIQT(QWidget):
         self.setStyle(self.password, "app/template/css/login/qline.css")
         self.setStyle(self.box, "app/template/css/login/qgroupbox.css")
         self.setStyle(self.layout_login, "app/template/css/login/qframe.css")
+        self.setStyle(self.button_login, "app/template/css/login/button.css")
         
 
         
