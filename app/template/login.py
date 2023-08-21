@@ -33,6 +33,7 @@ class LoginUIQT(QWidget):
     def eventButtonClickedLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True:
             self.home = homeViewQT()
+            self.home.show()
             self.close()
         else:
             QMessageBox.critical(None, "Error", "Wrong username or password")

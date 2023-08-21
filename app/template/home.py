@@ -36,12 +36,13 @@ class VoiceWorker(QObject):
     textRecord = pyqtSignal(str)
     textReply = pyqtSignal(str)
     
+    @pyqtSlot()
     def task(self):
         recognizer_engine = sr.Recognizer()
         micro_engine = sr.Microphone()
         self.textReply.emit("Say something!")
         speakText("Say something!")
-        while not self.stopped:
+        while True:
             with micro_engine as source:
                 self.textReply.emit("Got it! Now to recognize it...")
                 speakText("Got it! Now to recognize it...")
@@ -73,7 +74,7 @@ class HomeQT(QMainWindow):
         
         # audio thread in environment variable
         self.initThreadingWorker()
-        
+
         # toplevel in menu button event clicked
         self.edit_toplevel = None
         self.help_toplevel = None
@@ -100,7 +101,10 @@ class HomeQT(QMainWindow):
         file.close()
     
     def initThreadingWorker(self):
-        app.environment.worker = VoiceWorker()
+        self.worker = VoiceWorker()
+        self.thread = QThread()
+        self.thread.start()
+        self.worker.moveToThread(self.thread)
     
     def setIconButtonRecord(self, button, image_path):
         """Sets the icon of the button to the image at the specified path."""
@@ -166,11 +170,10 @@ class HomeQT(QMainWindow):
     
     # test API speech to text trên QThread
     def eventButtonClickedAudioRecordQThread(self):
-        app.environment.thread = QThread()
-        app.environment.thread.start()
-        app.environment.worker.moveToThread(app.environment.thread)
-        app.environment.worker.task()
-            
+        self.thread = QThread()
+        self.thread.start()
+        self.worker.moveToThread(app.environment.thread)
+        
     def eventCreateAction(self):
         self.file_action = QAction("&File Open", self, triggered = self.eventButtonClickedFile)
         self.edit_action = QAction("&Edit Param", self, triggered= self.eventButtonClickedEdit)
@@ -269,7 +272,7 @@ class HomeQT(QMainWindow):
         self.label_view = QLabel()
         self.label_view.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.label_temp_frame_layout.addWidget(self.label_view)
-        app.environment.worker.textRecord.connect(self.label_view.setText)
+        self.worker.textRecord.connect(self.label_view.setText)
         
         self.audio_temp_frame = QFrame()
         self.audio_temp_frame_layout = QVBoxLayout()
@@ -287,10 +290,10 @@ class HomeQT(QMainWindow):
         self.label_input = QLabel()
         self.label_input.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.label_temp_input_frame_layout.addWidget(self.label_input)
-        app.environment.worker.textReply.connect(self.label_input.setText)
+        self.worker.textReply.connect(self.label_input.setText)
         
         self.button_record = QPushButton()
-        self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)
+        self.button_record.clicked.connect(self.worker.task)
         self.setIconButtonRecord(self.button_record, 'app/images/icons/microphone.png')
         self.audio_temp_frame_layout.addWidget(self.button_record)
         self.audio_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
