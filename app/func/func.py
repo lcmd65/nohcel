@@ -27,6 +27,7 @@ def audioMicroToText():
     try:
         r = sr.Recognizer()
         with sr.Microphone() as source:
+            speakText("hey hahahaha")
             r.adjust_for_ambient_noise(source)
             audio = r.listen(source, phrase_time_limit= 10)
             text = r.recognize_google(audio, language="vi-VI")
@@ -73,7 +74,6 @@ def speakTextThread(command):
     th = threading.Thread(target= partial(speakText, command))
     th.daemon = True
     th.start()
-    
     
 if __name__ == "__main__":
     print(audioMicroToText())

@@ -9,7 +9,7 @@ import app.view.var
 import app.environment
 import gc
 from functools import partial
-from app.func.func import audioMicroToText, speakText
+from app.func.func import audioMicroToText, speakTextThread
 from PyQt6.QtWidgets import (
     QHBoxLayout,
     QTreeView,
@@ -40,21 +40,26 @@ class VoiceWorker(QObject):
     def task(self):
         recognizer_engine = sr.Recognizer()
         micro_engine = sr.Microphone()
-        self.textReply.emit("Say something!")
-        speakText("Say something!")
-        while True:
+        try:
+            self.textReply.emit("Say something!")
+        except:
+            pass
+        speakTextThread("Say something!")
+        try:
             with micro_engine as source:
                 self.textReply.emit("Got it! Now to recognize it...")
-                speakText("Got it! Now to recognize it...")
-                audio = recognizer_engine.listen(source, phrase_time_limit= 10)
+                speakTextThread("Got it! Now to recognize it...")
                 try:
+                    audio = recognizer_engine.listen(source, phrase_time_limit= 10)
                     value = recognizer_engine.recognize_google(audio)
-                    self.textRecord.emit(f"{value}".format(str))
-                    self.textReply.emit(f"{value}".format(str))
-                    speakText(f"{value}".format(str))
+                    self.textRecord.emit(f"{value}")
+                    self.textReply.emit(f"{value}")
+                    speakTextThread(f"{value}")
                 except sr.UnknownValueError:
                     self.textReply.emit("Oops")
-                    speakText("Oops")
+                    speakTextThread("Oops")
+        except Exception as e:
+            print(e)
 
 ################################################################################################################################################################################
 # QMainWindow Home view of Project #############################################################################################################################################
@@ -83,7 +88,7 @@ class HomeQT(QMainWindow):
         
         # ui
         self.initUI()
-        self.setObjectStyleCSS()   
+        self.setObjectStyleCSS()
     
     # external variable background and icon init
     def eventSetExternalVal(self):
@@ -102,9 +107,7 @@ class HomeQT(QMainWindow):
     
     def initThreadingWorker(self):
         self.worker = VoiceWorker()
-        self.thread = QThread()
-        self.thread.start()
-        self.worker.moveToThread(self.thread)
+        self.worker.moveToThread(app.environment.thread)
     
     def setIconButtonRecord(self, button, image_path):
         """Sets the icon of the button to the image at the specified path."""
@@ -116,7 +119,7 @@ class HomeQT(QMainWindow):
         button.setIconSize(pixmap.rect().size())
     
     def eventButtonClickedEdit(self):
-        try:
+        try:     
             from app.template.edit import EditQT
             self.edit_toplevel = EditQT()
             self.edit_toplevel.show()
@@ -151,9 +154,9 @@ class HomeQT(QMainWindow):
     # thử nghiệm API speech to text trên sys
     def eventButtonClickedAudioRecord(self):
         if not self.conversation:
-            speakText("Hi!, I am Nohcel, chat Assistant developed by VinBigdata")
+            speakTextThread("Hi!, I am Nohcel, chat Assistant developed by VinBigdata")
         else:
-            speakText("How can i help you?")
+            speakTextThread("How can i help you?")
         text = audioMicroToText()
         self.label_view.clear()
         self.label_view.setText(text)
@@ -170,9 +173,8 @@ class HomeQT(QMainWindow):
     
     # test API speech to text trên QThread
     def eventButtonClickedAudioRecordQThread(self):
-        self.thread = QThread()
-        self.thread.start()
-        self.worker.moveToThread(app.environment.thread)
+        self.worker.task()
+        app.environment.thread.exec()
         
     def eventCreateAction(self):
         self.file_action = QAction("&File Open", self, triggered = self.eventButtonClickedFile)
@@ -293,7 +295,7 @@ class HomeQT(QMainWindow):
         self.worker.textReply.connect(self.label_input.setText)
         
         self.button_record = QPushButton()
-        self.button_record.clicked.connect(self.worker.task)
+        self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)
         self.setIconButtonRecord(self.button_record, 'app/images/icons/microphone.png')
         self.audio_temp_frame_layout.addWidget(self.button_record)
         self.audio_temp_frame_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -320,10 +322,12 @@ class HomeQT(QMainWindow):
         self.setStyle(self.label_temp_frame, 'app/template/css/home/temp/qframe.css')
 
 def main():
-    app = QApplication(sys.argv)
+    application = QApplication(sys.argv)
+    app.environment.thread = QThread()
+    app.environment.thread.start()
     home = HomeQT()
     home.show()
-    app.exec()
+    sys.exit(application.exec())
 
 if __name__ == "__main__":
     main()
