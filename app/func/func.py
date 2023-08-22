@@ -6,6 +6,7 @@ import playsound
 import pyaudio
 import threading
 import time
+import app.environment
 
 def sequence(*functions):
     def func(*args, **kwargs):
@@ -71,9 +72,9 @@ def audioMicroToTextThread():
     th.start()
     
 def speakTextThread(command):
-    th = threading.Thread(target= partial(speakText, command))
-    th.daemon = True
-    th.start()
+    app.environment.thread2 = threading.Thread(target= partial(speakText, command))
+    app.environment.thread2.daemon = True
+    app.environment.thread2.start()
     
 if __name__ == "__main__":
     print(audioMicroToText())

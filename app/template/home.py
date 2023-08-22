@@ -54,7 +54,7 @@ class VoiceWorker(QObject):
                     value = recognizer_engine.recognize_google(audio)
                     self.textRecord.emit(f"{value}")
                     self.textReply.emit(f"{value}")
-                    speakTextThread(f"{value}")
+                    speakTextThread(str(value))
                 except sr.UnknownValueError:
                     self.textReply.emit("Oops")
                     speakTextThread("Oops")
@@ -173,6 +173,7 @@ class HomeQT(QMainWindow):
     
     # test API speech to text trên QThread
     def eventButtonClickedAudioRecordQThread(self):
+        app.environment.thread.start()
         self.worker.task()
         app.environment.thread.exec()
         
@@ -324,7 +325,6 @@ class HomeQT(QMainWindow):
 def main():
     application = QApplication(sys.argv)
     app.environment.thread = QThread()
-    app.environment.thread.start()
     home = HomeQT()
     home.show()
     sys.exit(application.exec())
