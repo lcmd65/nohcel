@@ -1,5 +1,5 @@
 # env for application widget
-app = None
+application = None
 
 # env for multithreading
 thread = None

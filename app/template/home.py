@@ -70,6 +70,7 @@ class HomeQT(QMainWindow):
         
         # parent & event 
         self.setWindowTitle("VinBigData NOHCEL")
+        self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.resize(1980, 1080)
         self.eventCreateAction()
         self.createMenuBar()
@@ -90,6 +91,10 @@ class HomeQT(QMainWindow):
         self.initUI()
         self.setObjectStyleCSS()
     
+    def closeEvent(self, event):
+        # Do not close the window
+        event.ignore()
+        
     # external variable background and icon init
     def eventSetExternalVal(self):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801,\
@@ -106,8 +111,8 @@ class HomeQT(QMainWindow):
         file.close()
     
     def initThreadingWorker(self):
-        self.worker = VoiceWorker()
-        self.worker.moveToThread(app.environment.thread)
+        app.environment.worker = VoiceWorker()
+        app.environment.worker.moveToThread(app.environment.thread)
     
     def setIconButtonRecord(self, button, image_path):
         """Sets the icon of the button to the image at the specified path."""
@@ -174,7 +179,7 @@ class HomeQT(QMainWindow):
     # test API speech to text trên QThread
     def eventButtonClickedAudioRecordQThread(self):
         app.environment.thread.start()
-        self.worker.task()
+        app.environment.worker.task()
         app.environment.thread.exec()
         
     def eventCreateAction(self):
@@ -275,7 +280,7 @@ class HomeQT(QMainWindow):
         self.label_view = QLabel()
         self.label_view.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.label_temp_frame_layout.addWidget(self.label_view)
-        self.worker.textRecord.connect(self.label_view.setText)
+        app.environment.worker.textRecord.connect(self.label_view.setText)
         
         self.audio_temp_frame = QFrame()
         self.audio_temp_frame_layout = QVBoxLayout()
@@ -293,7 +298,7 @@ class HomeQT(QMainWindow):
         self.label_input = QLabel()
         self.label_input.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.label_temp_input_frame_layout.addWidget(self.label_input)
-        self.worker.textReply.connect(self.label_input.setText)
+        app.environment.worker.textReply.connect(self.label_input.setText)
         
         self.button_record = QPushButton()
         self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)
@@ -323,11 +328,11 @@ class HomeQT(QMainWindow):
         self.setStyle(self.label_temp_frame, 'app/template/css/home/temp/qframe.css')
 
 def main():
-    application = QApplication(sys.argv)
+    app.environment.application = QApplication([])
     app.environment.thread = QThread()
     home = HomeQT()
     home.show()
-    sys.exit(application.exec())
+    sys.exit(app.environment.application.exec())
 
 if __name__ == "__main__":
     main()

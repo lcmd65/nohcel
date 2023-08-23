@@ -32,7 +32,8 @@ class LoginUIQT(QWidget):
     
     def eventButtonClickedLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True:
-            self.home = homeViewQT()
+            app.environment.thread = QThread()
+            self.home = HomeQT()
             self.home.show()
             self.close()
         else:
