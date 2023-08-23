@@ -47,14 +47,14 @@ class VoiceWorker(QObject):
         speakTextThread("Say something!")
         try:
             with micro_engine as source:
-                self.textReply.emit("Got it! Now to recognize it...")
-                speakTextThread("Got it! Now to recognize it...")
                 try:
                     audio = recognizer_engine.listen(source, phrase_time_limit= 10)
                     value = recognizer_engine.recognize_google(audio)
                     self.textRecord.emit(f"{value}")
                     self.textReply.emit(f"{value}")
                     speakTextThread(str(value))
+                    self.textReply.emit("Got it! Now to recognize it...")
+                    speakTextThread("Got it! Now to recognize it...")
                 except sr.UnknownValueError:
                     self.textReply.emit("Oops")
                     speakTextThread("Oops")
@@ -92,9 +92,17 @@ class HomeQT(QMainWindow):
         self.setObjectStyleCSS()
     
     def closeEvent(self, event):
-        # Do not close the window
-        event.ignore()
-        
+        if event.type() == QEvent.Type.NonClientAreaMouseButtonDblClick:
+            event.ignore()
+        elif event.type() == QEvent.Type.Close:
+            event.ignore()
+        else:
+            reply = QMessageBox.question(self, "Quit?", "Are you sure you want to quit?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
+                event.accept()
+            else:
+                 event.ignore()
+                 
     # external variable background and icon init
     def eventSetExternalVal(self):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801,\
@@ -280,7 +288,7 @@ class HomeQT(QMainWindow):
         self.label_view = QLabel()
         self.label_view.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.label_temp_frame_layout.addWidget(self.label_view)
-        app.environment.worker.textRecord.connect(self.label_view.setText)
+        app.environment.worker.textRecord.connect(lambda textRecord: self.label_view.setText(textRecord))
         
         self.audio_temp_frame = QFrame()
         self.audio_temp_frame_layout = QVBoxLayout()
@@ -298,7 +306,7 @@ class HomeQT(QMainWindow):
         self.label_input = QLabel()
         self.label_input.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self.label_temp_input_frame_layout.addWidget(self.label_input)
-        app.environment.worker.textReply.connect(self.label_input.setText)
+        app.environment.worker.textReply.connect(lambda textReply: self.label_view.setText(textReply))
         
         self.button_record = QPushButton()
         self.button_record.clicked.connect(self.eventButtonClickedAudioRecordQThread)
