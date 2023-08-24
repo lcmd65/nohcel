@@ -92,16 +92,18 @@ class HomeQT(QMainWindow):
         self.setObjectStyleCSS()
     
     def closeEvent(self, event):
-        if event.type() == QEvent.Type.NonClientAreaMouseButtonDblClick:
-            event.ignore()
-        elif event.type() == QEvent.Type.Close:
-            event.ignore()
-        else:
-            reply = QMessageBox.question(self, "Quit?", "Are you sure you want to quit?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-            if reply == QMessageBox.StandardButton.Yes:
-                event.accept()
+        if event.type() == QEvent.Type.Close:
+            # check if event is not a button close click
+            if not event.spontaneous():
+                event.ignore() # prevent the program auto exit 
             else:
-                 event.ignore()
+                reply = QMessageBox.question(self, "Quit?", "Are you sure you want to quit?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                if reply == QMessageBox.StandardButton.Yes:
+                    event.accept()
+                else:
+                    event.ignore()
+        else:
+            event.ignore()
                  
     # external variable background and icon init
     def eventSetExternalVal(self):
