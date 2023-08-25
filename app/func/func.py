@@ -75,8 +75,3 @@ def speakTextThread(command):
     app.environment.thread2 = threading.Thread(target= partial(speakText, command))
     app.environment.thread2.daemon = True
     app.environment.thread2.start()
-    
-if __name__ == "__main__":
-    print(audioMicroToText())
-    
-# python3 app/func/func.py
