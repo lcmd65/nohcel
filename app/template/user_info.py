@@ -1,5 +1,5 @@
 import app.view.var
-from func.database import userAuthenticationNonePass
+from app.func.database import userAuthenticationNonePass
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -56,9 +56,6 @@ class UserChange(QMainWindow):
         app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801,\
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,\
             Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
-        app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(80, 50, \
-            Qt.AspectRatioMode.KeepAspectRatioByExpanding, \
-            Qt.TransformationMode.SmoothTransformation)
 
     def setStyle(self, object, css_path):
         with open(css_path,"r") as file:
@@ -70,26 +67,27 @@ class UserChange(QMainWindow):
         pass
     
     def eventButtonClickedChangePass(self):
-        pass
+        self.changepass_toplevel = PasswordChange()
+        self.changepass_toplevel.show()
+        self.close()
     
-    def initUI(self):
-        self.main_layout = QVBoxLayout()
-        
-        self.main_form = QFormLayout()
-        self.main_layout.addLayout(self.main_form)
-        
+    def initUI(self): 
+        self.frame = QFrame()
+        self.main_form = QFormLayout()   
+        self.frame.setLayout(self.main_form)
+        self.main_form.setAlignment(Qt.AlignmentFlag.AlignCenter)     
         self.user = QLineEdit()
         self.email = QLineEdit()
         self.phone = QLineEdit()
-        self.button = QPushButton()
+        self.button = QPushButton("OK")
+        self.button.setMaximumWidth(100)
         self.button.clicked.connect(partial(self.eventButtonClickedChangePass, self.user, self.email, self.phone))
         
         self.main_form.addRow('Username:', self.user)
         self.main_form.addRow('Email:', self.email)
         self.main_form.addRow('Phone:', self.phone)
-        self.main_form.addRow(self.button)  
-        
-        self.setLayout(self.main_layout)      
-    
+        self.main_form.addRow(self.button) 
+        self.setCentralWidget(self.frame) 
+           
     def setStyleObject(self):
         pass

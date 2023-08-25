@@ -12,6 +12,12 @@ from PyQt6.QtWidgets import QMessageBox
 ################################################################################################################################################################################
 # QWWidget for login ###########################################################################################################################################################
 ################################################################################################################################################################################
+class QLabel_alterada(QLabel):
+    clicked=pyqtSignal()
+    
+    def mousePressEvent(self, ev):
+        self.clicked.emit()
+    
 class LoginUIQT(QWidget):
     def __init__(self, parent = None):
         super().__init__()
@@ -44,8 +50,14 @@ class LoginUIQT(QWidget):
         self.height = self.frameGeometry().height()
 
     def eventButtonClickedLoginEditClick(self):
-        pass
-    
+        from app.template.user_info import UserChange
+        self.edit = UserChange()
+        self.edit.show()
+        
+    def on_mouse_press(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.eventButtonClickedLoginEditClick()
+                    
     def initUI(self):
         self.main_layout = QVBoxLayout()
 
@@ -81,12 +93,12 @@ class LoginUIQT(QWidget):
         self.label_login.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.label_login.setContentsMargins(0,25,0,0)
         self.frame_login.addWidget(self.label_login)
-
+        
         self.label_account = QLabel("Username")
         self.label_account.setStyleSheet("color: black")
         self.label_account.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.frame_entry.addWidget(self.label_account)
-
+        
         self.account = QLineEdit()
         self.account.setPlaceholderText('Enter your Username')
         self.frame_entry.addWidget(self.account)
@@ -105,7 +117,7 @@ class LoginUIQT(QWidget):
         self.label_forgot.setStyleSheet("color: black")
         self.label_forgot.setCursor(Qt.CursorShape.PointingHandCursor)
         self.frame_entry.addWidget(self.label_forgot)
-        self.label_forgot.linkActivated.connect(partial(self.eventButtonClickedLoginEditClick))
+        self.label_forgot.mousePressEvent = (partial(self.on_mouse_press))
 
         self.frame_login.addLayout(self.frame_entry)
         
@@ -114,7 +126,7 @@ class LoginUIQT(QWidget):
         self.button_login.clicked.connect(partial(self.eventButtonClickedLoginClick, self.account, self.password))
         self.button_login.setFixedWidth(200)
         self.frame_login.addWidget(self.button_login)
-
+        
         self.main_layout.addLayout(self.bg_layout)
         self.main_layout.addWidget(self.label_privacy)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
