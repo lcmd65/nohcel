@@ -7,7 +7,7 @@
    - By using or accessing our Products and Services in any manner, you confirm that you accept the practices and policies stated in this Privacy Policy.
 
 <h3> Data Access Privacy </h3>
-   - By accessing this web site you agree to comply with our information sharing policies, in which:
+By accessing this web site you agree to comply with our information sharing policies, in which:
    
    * Research community is entitled to looking up information on the website, and required to quote our website and publication (if any) in accordance with our guidelines when using our documents in their research;
       
