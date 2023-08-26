@@ -1,13 +1,15 @@
-<h4> Documentation </h4>
+<h2> Documentation </h2>
 
 <span style="font-size: 24px;">Policies Reference for Nohcel project </span>
-  <small> - At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information </small>
-  <small> - By using or accessing our Products and Services in any manner, you confirm that you accept the practices and policies stated in this Privacy Policy. </small>
 
-<h6> Requirement </h6>
+   - At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information.
+   - 
+  - By using or accessing our Products and Services in any manner, you confirm that you accept the practices and policies stated in this Privacy Policy.
+
+<h3> Requirement </h3>
     requirement.txt
 
-<h6> Application </h6>
+<h3> Application </h3>
 
 - Login
 
@@ -29,5 +31,5 @@
 
 
 
-### Model
+<h3> Model </h3>
 
