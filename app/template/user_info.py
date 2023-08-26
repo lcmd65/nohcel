@@ -9,7 +9,7 @@ class PasswordChange(QMainWindow):
     def __init__(self, parent = None):
         super().__init__()
         self.setWindowTitle("Change Password")
-        self.resize(990, 540)
+        self.resize(600, 400)
         self.setExternalVal()
         self.initUI()
         self.setStyleObject()
@@ -75,7 +75,7 @@ class UserChange(QMainWindow):
         self.frame = QFrame()
         self.main_form = QFormLayout()   
         self.frame.setLayout(self.main_form)
-        self.main_form.setAlignment(Qt.AlignmentFlag.AlignCenter)     
+        self.main_form.setAlignment(Qt.AlignmentFlag.AlignTop)     
         self.user = QLineEdit()
         self.email = QLineEdit()
         self.phone = QLineEdit()
@@ -90,4 +90,7 @@ class UserChange(QMainWindow):
         self.setCentralWidget(self.frame) 
            
     def setStyleObject(self):
-        pass
+        self.setStyle(self.user, "app/template/css/user_info/line.css")
+        self.setStyle(self.email, "app/template/css/user_info/line.css")
+        self.setStyle(self.phone, "app/template/css/user_info/line.css")
+        self.setStyle(self.frame,"app/template/css/user_info/frame.css" )

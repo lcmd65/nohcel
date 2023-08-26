@@ -1,0 +1,7 @@
+QFrame {
+    border-radius: 8px;
+    max-width: 1980px;
+    max-height: 1080px;
+    padding: 0px 100%;
+    position: absolute;
+}
