@@ -2,4 +2,10 @@ PyQt6==6.5.2
 AppKit==0.2.8
 pyproject-toml==0.0.10
 PyGObject==3.44.1
+playsound==1.3.0
+gtts==2.3.2
+pyttsx4==3.0.15
+SpeechRecognition==3.10.0 
+pyaudio==0.2.13
+pymssql==2.2.7
 
