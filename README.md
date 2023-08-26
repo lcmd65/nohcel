@@ -1,14 +1,13 @@
-## Documentation
-Policies Reference for Nohcel project:
-
-<h4> - At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information. </h4>
+<h4> Documentation </h4>
+ Policies Reference for Nohcel project:
+ - At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information
 
  - By using or accessing our Products and Services in any manner, you confirm that you accept the practices and policies stated in this Privacy Policy.
 
-### Requirement
+<h6> Requirement </h6>
     requirement.txt
 
-### Application
+<h6> Application </h6>
 
 - Login
 
