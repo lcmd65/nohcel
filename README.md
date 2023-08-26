@@ -1,4 +1,4 @@
-<h4> Documentation
+<h4> text = "Documentation"
  <div>
  Policies Reference for Nohcel project:
   <list> At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information </list>
