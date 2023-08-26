@@ -1,6 +1,6 @@
 <h4> Documentation </h4>
 
-<span style="font-size: 12;">Policies Reference for Nohcel project </span>
+<span style="font-size: 10;">Policies Reference for Nohcel project </span>
   - At VinBigData, we take your privacy seriously and it matters to us that you acknowledge the reasons we’re collecting and using information </list>
   - By using or accessing our Products and Services in any manner, you confirm that you accept the practices and policies stated in this Privacy Policy.
 </span>
