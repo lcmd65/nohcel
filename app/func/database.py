@@ -28,3 +28,6 @@ def userAuthentication(account, password):
 def userAuthenticationNonePass(account,email):
     """ task """
     return 
+
+def userSender(information):
+    return
