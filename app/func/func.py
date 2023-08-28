@@ -18,7 +18,7 @@ def sequence(*functions):
 
 def speakText(command):
     # Initialize the engine
-    engine = pyttsx3.init()
+    engine = pyttsx4.init()
     engine.setProperty('rate', 150)
     engine.setProperty('volume', 0.5)
     engine.say(command)
