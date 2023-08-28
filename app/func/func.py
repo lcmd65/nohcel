@@ -18,11 +18,14 @@ def sequence(*functions):
 
 def speakText(command):
     # Initialize the engine
-    engine = pyttsx4.init()
+    engine = pyttsx4.init(driverName='sapi5') 
     engine.setProperty('rate', 150)
     engine.setProperty('volume', 0.5)
     engine.say(command)
     engine.runAndWait()
+    
+def speakTextOS(command):
+    pass
 
 def audioMicroToText():
     try:
@@ -75,3 +78,9 @@ def speakTextThread(command):
     app.environment.thread2 = threading.Thread(target= partial(speakText, command))
     app.environment.thread2.daemon = True
     app.environment.thread2.start()
+    
+    
+    
+    
+    
+    
