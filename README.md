@@ -35,6 +35,12 @@ By accessing this web site you agree to comply with our information sharing poli
 
   <img width="400" alt="image" src="https://github.com/DatMinhLeChon/NOHCEL_Qt/assets/93373784/1e8604be-a361-4faa-9da0-cd047a3c2287">
 
+  <img width="400" alt="Screenshot 2023-09-05 at 21 41 56" src="https://github.com/lcmd65/nohcel.qt/assets/93373784/c3b08c64-8275-47c8-907e-02643470ab57">
+  
+   <img width="400" alt="Screenshot 2023-09-05 at 21 43 58" src="https://github.com/lcmd65/nohcel.qt/assets/93373784/5e41ffbe-3946-4e5a-b444-48f832a6d29e">
+
+
+
 - Edit
 
 
