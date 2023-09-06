@@ -42,7 +42,7 @@ By accessing this web site you agree to comply with our information sharing poli
 
 
 - Edit
-
+    Parameter (Connection, Global) edit
 
 
 <h3> Model </h3>
