@@ -19,6 +19,7 @@
      title =        {{VinDr Lab: A Data Platform for Medical AI}},
      howpublished = {\url{https://github.com/lcmd65/nohcel}},
      year =         {2023}
+     }
    
 
 ### Data access privacy
