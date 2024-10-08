@@ -1,4 +1,4 @@
-from app.view.view import loginViewQT
+from src.view.view import loginViewQT
 import gc
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import nltk
 import fuzz
 import re
 import json
-from app.func.func import audioToText
+from src.func.func import audioToText
 class Statement():
     def __init__(self, text):
         self._text = text
@@ -15,7 +15,7 @@ class Statement():
         
     def processingAnnotation(self):
         """ annotations processing step 1: embedded database"""
-        with open("app/embedded/embedded.json", "r+") as file:
+        with open("src/embedded/embedded.json", "r+") as file:
             data = json.load(file)
             for item, value in data.items():   
                 if ("date" in self._annotations) and ("address" in self._annotations):
@@ -28,7 +28,7 @@ class Statement():
                         
     def processingText(self):
         """ processing Acronyms  word"""
-        with open("app/embedded/embedded_word.json", "r+") as file:
+        with open("src/embedded/embedded_word.json", "r+") as file:
             data = json.load(file)
         self._token = nltk.tokenize(self.text)
         for index in range(len(self._token)):
@@ -42,9 +42,9 @@ class Statement():
 
     def processingNumberSuffix(self):
         """ processing and normalize number """
-        with open("app/embedded/embedded_prefix.json", "r+") as prefix:
+        with open("src/embedded/embedded_prefix.json", "r+") as prefix:
             data_prefix = json.load(prefix)
-        with open("app/embedded/embedded_suffix.json", "r+") as suffix:
+        with open("src/embedded/embedded_suffix.json", "r+") as suffix:
             data_suffix = json.load(suffix)
         for index in range(len(self._token) - 1):
             if self._token[index] in data_prefix.key() and self._token[index + 1] in data_suffix.key():
@@ -54,7 +54,7 @@ class Statement():
         suffix.close()
             
     def processingNumberContinue(self):
-        with open("app/embedded/embedded_prefix.json", "r+") as prefix:
+        with open("src/embedded/embedded_prefix.json", "r+") as prefix:
             data_prefix = json.load(prefix)
         for first_index in range(len(self._token)-1):
             if self._token[first_index] in data_prefix.key():
@@ -100,7 +100,7 @@ class Conver():
     
 if __name__ == "__main__":
     pass
-# python3 app/model/conversation.py
+# python3 src/model/conversation.py
 
 
         

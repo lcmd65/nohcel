@@ -1,5 +1,5 @@
-import app.view.var
-from app.func.database import userAuthenticationNonePass
+import src.view.var
+from src.func.database import userAuthenticationNonePass
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -53,7 +53,7 @@ class UserChange(QMainWindow):
         self.setStyleObject()
     
     def eventSetExternalVal(self):
-        app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801,\
+        src.view.var.background_view = QPixmap('src/images/background_login.png').scaled(810, 801,\
             Qt.AspectRatioMode.KeepAspectRatioByExpanding,\
             Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
 
@@ -90,7 +90,7 @@ class UserChange(QMainWindow):
         self.setCentralWidget(self.frame) 
            
     def setStyleObject(self):
-        self.setStyle(self.user, "app/template/css/user_info/line.css")
-        self.setStyle(self.email, "app/template/css/user_info/line.css")
-        self.setStyle(self.phone, "app/template/css/user_info/line.css")
-        self.setStyle(self.frame,"app/template/css/user_info/frame.css" )
+        self.setStyle(self.user, "src/template/css/user_info/line.css")
+        self.setStyle(self.email, "src/template/css/user_info/line.css")
+        self.setStyle(self.phone, "src/template/css/user_info/line.css")
+        self.setStyle(self.frame,"src/template/css/user_info/frame.css" )

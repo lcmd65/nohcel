@@ -1,12 +1,12 @@
-import app.environment
-import app.view.var
-from app.view.view import homeViewQT
-from app.template.home import HomeQT
+import src.environment
+import src.view.var
+from src.view.view import homeViewQT
+from src.template.home import HomeQT
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from functools import partial
-from app.func.database import userAuthentication
+from src.func.database import userAuthentication
 from PyQt6.QtWidgets import QMessageBox
 
 ################################################################################################################################################################################
@@ -28,8 +28,8 @@ class LoginUIQT(QWidget):
         self.setObjectStyleCSS()
         
     def setExternalVal(self):
-        app.view.var.background_view = QPixmap('app/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
-        app.view.var.logo_view = QPixmap('app/images/color_logo.png').scaled(120, 75, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
+        src.view.var.background_view = QPixmap('src/images/background_login.png').scaled(810, 801, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation) ##4213 × 4167
+        src.view.var.logo_view = QPixmap('src/images/color_logo.png').scaled(120, 75, Qt.AspectRatioMode.KeepAspectRatioByExpanding, Qt.TransformationMode.SmoothTransformation)
         
     def setStyle(self, object, css_path):
         with open(css_path,"r") as file:
@@ -38,7 +38,7 @@ class LoginUIQT(QWidget):
     
     def eventButtonClickedLoginClick(self, account, password):
         if userAuthentication(account.text(), password.text()) == True:
-            app.environment.thread = QThread()
+            src.environment.thread = QThread()
             self.home = HomeQT()
             self.home.show()
             self.close()
@@ -50,7 +50,7 @@ class LoginUIQT(QWidget):
         self.height = self.frameGeometry().height()
 
     def eventButtonClickedLoginEditClick(self):
-        from app.template.user_info import UserChange
+        from src.template.user_info import UserChange
         self.edit = UserChange()
         self.edit.show()
         
@@ -62,7 +62,7 @@ class LoginUIQT(QWidget):
         self.main_layout = QVBoxLayout()
 
         self.label_background = QLabel()
-        self.label_background.setPixmap(app.view.var.background_view)
+        self.label_background.setPixmap(src.view.var.background_view)
         self.label_background.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.label_privacy = QLabel("VinBigdata Privacy @2023")
@@ -89,7 +89,7 @@ class LoginUIQT(QWidget):
         self.frame_entry.setContentsMargins(15,10,15,50)
         
         self.label_login = QLabel()
-        self.label_login.setPixmap(app.view.var.logo_view)
+        self.label_login.setPixmap(src.view.var.logo_view)
         self.label_login.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.label_login.setContentsMargins(0,25,0,0)
         self.frame_login.addWidget(self.label_login)
@@ -134,11 +134,11 @@ class LoginUIQT(QWidget):
         
     def setObjectStyleCSS(self):
         self.setStyleSheet("background-color: #ececec")
-        self.setStyle(self.account, "app/template/css/login/qline.css")
-        self.setStyle(self.password, "app/template/css/login/qline.css")
-        self.setStyle(self.box, "app/template/css/login/qgroupbox.css")
-        self.setStyle(self.layout_login, "app/template/css/login/qframe.css")
-        self.setStyle(self.button_login, "app/template/css/login/button.css")
+        self.setStyle(self.account, "src/template/css/login/qline.css")
+        self.setStyle(self.password, "src/template/css/login/qline.css")
+        self.setStyle(self.box, "src/template/css/login/qgroupbox.css")
+        self.setStyle(self.layout_login, "src/template/css/login/qframe.css")
+        self.setStyle(self.button_login, "src/template/css/login/button.css")
         
 
         
