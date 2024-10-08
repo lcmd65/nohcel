@@ -21,16 +21,21 @@
         howpublished = {\url{https://github.com/lcmd65/nohcel}},
         year =         {2023}
      }
-   
+
+### Acknowledgments
+
+Thanks to VinBigData for providing and support for data integration.
+
+Special thanks to the contributors who made this project possible.
 
 ### Data access privacy
 
 By accessing this web site you agree to comply with our information sharing policies, in which:
    
-   * Research community is entitled to looking up information on the website, and required to quote our website and publication (if any) in accordance with our guidelines when using our documents in their research;
+   - Research community is entitled to looking up information on the website, and required to quote our website and publication (if any) in accordance with our guidelines when using our documents in their research;
       
-   * Research partners are entitled to directly use our database as agreed (in the forms of MOU, MTA, or NDA, etc.), and share copyright with VinBigdata on a case by case basis;
+   - Research partners are entitled to directly use our database as agreed (in the forms of MOU, MTA, or NDA, etc.), and share copyright with VinBigdata on a case by case basis;
       
-   * Institutions and individuals who wish to use our data for commercialization purposes must contact VinBigdata for agreement on specific rights.
+   - Institutions and individuals who wish to use our data for commercialization purposes must contact VinBigdata for agreement on specific rights.
 
 
