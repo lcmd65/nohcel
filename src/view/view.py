@@ -1,23 +1,23 @@
-import app.view.var
-import app.images
+import src.view.var
+import src.images
 import sys
 import threading
 from PyQt6.QtWidgets import (
     QApplication
 )
-import app.environment as env
+import src.environment as env
 
 def homeViewQT():
-    from app.template.home import HomeQT
+    from src.template.home import HomeQT
     home = HomeQT()
     home.show()
         
 def loginViewQT():
-    from app.template.login import LoginUIQT
-    env.app = QApplication(sys.argv)
+    from src.template.login import LoginUIQT
+    env.src = QApplication(sys.argv)
     login = LoginUIQT()
     login.show()
-    env.app.exec()
+    env.src.exec()
 
 ###
 
